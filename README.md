@@ -1,3 +1,9 @@
+This project scrapes recent clinical trials from https://clinicaltrials.gov/ and https://www.clinicaltrialsregister.eu/ctr-search/search?query=&dateFrom=2022-01-01&dateTo=2024-11-05. The results are updated every 12 hours and displayed in a table.
+<img width="1287" alt="Screenshot 2024-11-06 at 7 07 51 AM" src="https://github.com/user-attachments/assets/5f90b107-c56f-4181-95e9-538fd4bb1eb5">
+
+Insights from the table are generated in another tab.<img width="1284" alt="Screenshot 2024-11-06 at 7 07 56 AM" src="https://github.com/user-attachments/assets/c964bacd-3630-455d-b8bb-ab438f60f7e6">.
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -26,6 +32,8 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
