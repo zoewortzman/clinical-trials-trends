@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 export async function GET(): Promise<NextResponse> {
   try {
     // pull all data from supabases
-    const { data, error } = await supabase.from('clinical_trials').select('study_title, conditions, interventions, age, gender, start_date, locations');
+    const { data, error } = await supabase
+    .from('combined_trials').select('*');
+   //.select('study_title, study_identifier, conditions, sponsor, source');
+
     console.log(data)
     if (error) {
       throw new Error(error.message);

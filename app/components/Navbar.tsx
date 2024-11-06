@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Link from "next/link";
 
 // Navbar at top of page that allows user to toggle between Data and Insights
