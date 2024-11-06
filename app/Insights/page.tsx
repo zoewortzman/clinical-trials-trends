@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react';
 
+// Fetches elderly counts, calculates percentage of studies that invlolve elderly populations
+// displays in bulleted list 
 export default function Insights() {
     const [elderlyCount, setElderlyCount] = useState(null);
     const [totalCount, setTotalCount] = useState(null);

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(): Promise<NextResponse> {
   try {
+    // pull all data from supabases
     const { data, error } = await supabase.from('clinical_trials').select('study_title, conditions, interventions, age, gender, start_date, locations');
     console.log(data)
     if (error) {
