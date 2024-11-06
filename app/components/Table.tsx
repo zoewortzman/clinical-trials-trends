@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+// Fetches and displays clinical trials
 export default function Table() {
   const [data, setData] = useState([]);
   useEffect(() => {

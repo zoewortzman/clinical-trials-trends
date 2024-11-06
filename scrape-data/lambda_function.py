@@ -7,11 +7,14 @@ from bs4 import BeautifulSoup
 
 def lambda_handler(event, context):
     
+    # scrapes data from US clinical trials
     def scrape_clinical_trials():
         base_url = "https://clinicaltrials.gov/api/v2"
         endpoint = "/studies"
+        # takes sample of 50 most recent clincial trials
         url = base_url + endpoint + "?format=csv&pageSize=50&sort=StartDate"
         
+        # pulls data from clinical trials API
         response = requests.get(url)
         if response.status_code != 200:
             print(f"Error: HTTP Status Code: {response.status_code}")
@@ -24,7 +27,7 @@ def lambda_handler(event, context):
         db_user = 'user'
         db_password = 'pw'
         db_port = '6543'
-
+        # connects to Supabase Postgres table
         conn = pg8000.connect(
             host=db_host,
             database=db_name,
@@ -34,11 +37,13 @@ def lambda_handler(event, context):
         )
         cursor = conn.cursor()
 
+        # formats SQL insert statements
         insert_query = """
         INSERT INTO clinical_trials (study_title, conditions, interventions, age, gender, start_date, locations)
         VALUES ( %s, %s, %s, %s, %s, %s, %s)
         """
 
+        # inserts scrapped data in sql table named "clinical_trials"
         for row in reader:
             study_title = row['Study Title']
             conditions = row['Conditions']
@@ -51,14 +56,16 @@ def lambda_handler(event, context):
         conn.commit()
         cursor.close()
         conn.close()
+
+    # scrapes EU clinical trials
     def scrape_eu_ct():
         url = "https://www.clinicaltrialsregister.eu/ctr-search/search?query=&dateFrom=2022-01-01&dateTo=2024-11-05"
 
+        # scrapes all data in table using Beautiful Soup
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
-        table_rows = soup.find_all("table", class_="result")
 
-
+        # finds all study titles in table
         full_titles = []
         for td in soup.find_all('td'):
             label = td.find('span', class_='label')
@@ -66,6 +73,7 @@ def lambda_handler(event, context):
                 full_title = td.text.strip().replace('Full Title:', '').strip()
                 full_titles.append(full_title)
 
+        # finds all study ages in table
         ages = []
         for td in soup.find_all('td'):
             label = td.find('span', class_='label')
@@ -73,6 +81,7 @@ def lambda_handler(event, context):
                 age = td.text.strip().replace('Age:', '').strip()
                 ages.append(age)
 
+        # finds all study genders in table
         genders = []
         for td in soup.find_all('td'):
             label = td.find('span', class_='label')
@@ -80,6 +89,7 @@ def lambda_handler(event, context):
                 gender = td.text.strip().replace('Gender:', '').strip()
                 genders.append(gender)
 
+        # finds all study medical conditions in table
         conditions = []
         for td in soup.find_all('td'):
             label = td.find('span', class_='label')
@@ -87,6 +97,7 @@ def lambda_handler(event, context):
                 condition = td.text.strip().replace('Medical condition:', '').strip()
                 conditions.append(condition)
 
+        # creates new csv with results
         csv_header = ['Study Title', 'Conditions', 'Age', 'Gender']
 
         csv_rows = []
@@ -107,6 +118,7 @@ def lambda_handler(event, context):
         csv_file = StringIO(csv_data)
         reader = csv.DictReader(csv_file)
 
+        # connects to Supabase Postgres table 
         db_host = 'aws-0-us-west-1.pooler.supabase.com'
         db_name = 'postgres'
         db_user = 'user'
@@ -125,7 +137,7 @@ def lambda_handler(event, context):
         INSERT INTO clinical_trials (study_title, conditions, age, gender)
         VALUES (%s, %s, %s, %s)
         """
-
+        # Inserts sql statements in SQL table named "clinical_trials"
         for row in reader:
             study_title = row['Study Title']
             conditions = row['Conditions']
@@ -135,6 +147,7 @@ def lambda_handler(event, context):
         conn.commit()
         cursor.close()
         conn.close()
+    
     scrape_clinical_trials()
     scrape_eu_ct()
 
