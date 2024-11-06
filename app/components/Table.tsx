@@ -36,7 +36,7 @@ export default function Table() {
                   className="border-b px-4 py-2 text-left font-bold"
                   key={header}
                 >
-                  {header.replace("_", " ").toUpperCase()} {/* Format header */}
+                  {header.replace("_", " ").toUpperCase()} 
                 </th>
               ))}
           </tr>
