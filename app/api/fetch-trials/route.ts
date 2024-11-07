@@ -6,9 +6,6 @@ export async function GET(): Promise<NextResponse> {
     // pull all data from supabases
     const { data, error } = await supabase
     .from('combined_trials').select('*');
-   //.select('study_title, study_identifier, conditions, sponsor, source');
-
-    console.log(data)
     if (error) {
       throw new Error(error.message);
     }

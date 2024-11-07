@@ -3,23 +3,24 @@ import { NextResponse } from "next/server";
 
 export async function GET(): Promise<NextResponse> {
   try {
-    // count number of rows where the column age contains either "elderly" or "older_adult"
-    const { count: elderlyCount, error: elderlyError } = await supabase
-      .from('clinical_trials')
-      .select('age', { count: 'exact' })
-      .or('age.ilike.%elderly%,age.ilike.%older_adult%'); 
-    // count total number of observations
-    const { count: totalCount, error: totalError } = await supabase
-      .from('clinical_trials')
-      .select('*', { count: 'exact', head: true });
-    
-    if (elderlyError) throw new Error(elderlyError.message);
-    if (totalError) throw new Error(totalError.message);
+    // count number of rows from each source
+    const { count: euCount, error: euError } = await supabase
+      .from('combined_trials')
+      .select('source', { count: 'exact' })
+      .eq('source', 'EudraCT');
 
-    // return number of rows that contains studies for elderly populations and total number of rows
+    const { count: usCount, error: usError } = await supabase
+    .from('combined_trials')
+    .select('source', { count: 'exact' })
+    .eq('source', 'ClinicalTrials.gov');
+
+    
+    if (euError) throw new Error(euError.message);
+    if (usError) throw new Error(usError.message);
+
     return NextResponse.json({
-      elderlyCount,
-      totalCount,
+      euCount,
+      usCount,
     });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
