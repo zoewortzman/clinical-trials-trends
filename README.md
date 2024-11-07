@@ -11,7 +11,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## Getting Started
 
 After cloning the repo, the following code will install all necessary requirements (as well as installing npm and Node.js):
-pip install -r requirements.txt
+```pip install -r requirements.txt```
 
 You will additionall need a .env file with the NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, and you will need to update the connection variables in lambda_function.py to run this code. 
 
