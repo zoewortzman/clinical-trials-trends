@@ -7,25 +7,18 @@ export const metadata: Metadata = {
   description: "Shows trends in clinical trials data",
 };
 
+// displays navbar with tabs "Data" and "Insights"
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-
       <body>
-      <div>
-
-      <Navbar />
-
-      
+        <Navbar />
         {children}
-      </div>
       </body>
-  
-    
     </html>
   );
 }
